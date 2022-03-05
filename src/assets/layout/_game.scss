@@ -1,0 +1,225 @@
+.word-lines {
+    margin-bottom: 2em;
+    .word-line {
+        display: flex;
+        &.selected {
+            .word-letter:hover {
+                cursor: pointer;
+            }
+        }
+
+        .word-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-500);
+            border-radius: 5px;
+            width: 1.5em;
+            height: 1.5em;
+            margin: 2px;
+            font-size: 1.7em;
+            line-height: 0;
+            
+            &.selected {
+                background-color: var(--gray-300);
+            }
+            &.hot {
+                background-color: $warning;
+            }
+            &.correct {
+                background-color: $success;
+            }
+        }
+    }
+}
+
+.alert {
+    background-color: var(--gray-100);
+    padding: 1em;
+    border-radius: 5px;
+    margin-top: 0;
+
+    &.sucesso {
+        background-color: $success;
+    }
+    &.derrota {
+        background-color: $danger;
+    }
+    &.aviso {
+        background-color: $warning;
+    }
+}
+
+.keyboard {
+    display: flex;
+
+    .key {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--gray-500);
+        border-radius: 5px;
+
+        &.not-key {
+            background-color: var(--gray-100);
+            color: var(--gray-300);
+        }
+        &.hot-key {
+            background-color: $warning;
+            color: var(--black);
+        }
+        &.correct-key {
+            background-color: $success;
+            color: var(--black);
+        }
+    }
+}
+[theme="light"] {
+    .word-letter.selected {
+        background-color: var(--gray-400) !important;
+    }
+    .keyboard .key {
+        &.not-key {
+            background-color: var(--gray-400);
+            color: var(--gray-500);
+        }
+        &.hot-key {
+            background-color: $warning;
+            color: var(--black);
+        }
+        &.correct-key {
+            background-color: $success;
+            color: var(--black);
+        }
+    }
+}
+[theme="sepia"] {
+    .word-letter.selected {
+        background-color: var(--gray-400) !important;
+    }
+    .keyboard .key {
+        &.not-key {
+            background-color: var(--gray-400);
+            color: var(--gray-500);
+        }
+        &.hot-key {
+            background-color: $warning;
+            color: var(--black);
+        }
+        &.correct-key {
+            background-color: $success;
+            color: var(--black);
+        }
+    }
+}
+[theme="contrast"] {
+    .word-letter.selected {
+        background-color: $alt !important;
+    }
+    .keyboard .key{
+        &.not-key {
+            background-color: var(--gray-100);
+            color: $danger;
+        }
+        &.hot-key {
+            background-color: $warning;
+            color: var(--black);
+        }
+        &.correct-key {
+            background-color: $success;
+            color: var(--black);
+        }
+    }
+}
+
+.keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2em;
+    justify-content: center;
+    max-width: 500px;
+
+    .keyboard-row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        max-width: 430px;
+
+        .key {
+            width: 100%;
+            height: 1.5em;
+            margin: 2px;
+            padding: 0 .2em;
+            font-size: 1.2em;
+            line-height: 0;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &:last-child{
+            max-width: 400px;
+
+            .key:last-child {
+                padding: 0 .6em;
+            }
+        }
+    }
+}
+
+@keyframes rainbow {
+    0%   {background-color:$success;}
+    20%  {background-color:$warning;}
+    40%  {background-color:$danger;}
+    60%  {background-color:$alt;}
+    80%  {background-color:var(--white);}
+    100% {background-color:$success;}
+}
+.finished .key:hover {
+    cursor: default !important;
+}
+.finished #ENTER {
+    animation-name: rainbow;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    &:hover {
+        cursor: pointer !important;
+    }
+}
+
+@media only screen and (max-height: 900px) {
+    .alert {
+        margin-top: 20px;
+    }
+}
+@media only screen and (max-height: 790px) {
+    .alert {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+@media only screen and (max-height: 750px) {
+    .alert {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .word-lines {
+        margin-bottom: 10px;
+    }
+}
+@media only screen and (max-width: 430px) {
+    .keyboard .keyboard-row:last-child .key:last-child {
+        padding: 0 .4em;
+    }
+}
+@media only screen and (max-width: 390px) {
+    .keyboard .keyboard-row {
+        .key {
+            height: 1.5em;
+            font-size: 1em;
+        }
+        &:last-child .key:last-child {
+            padding: 0 .4em;
+        }
+    }
+}
