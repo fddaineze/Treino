@@ -10,7 +10,7 @@
         <li><a @click="viewHelp = true">❔<span>Ajuda</span></a></li>
       </ul>
     </nav>
-    <game v-show="viewGame" v-on:reload="reloadGame()"></game>
+    <game v-if="viewGame" v-on:reload="reloadGame()"></game>
     <stats v-show="viewStats" v-on:closed="closeModal()"></stats>
     <help v-show="viewHelp" v-on:closed="closeModal()"></help>
   </div>
@@ -42,7 +42,8 @@ export default {
     setFontSize,
     loadStats,
     reloadGame() {
-      console.log('reload');
+      this.viewGame = false;
+      this.$nextTick(() => { this.viewGame = true });
     },
     closeModal() {
       this.viewStats = false;
