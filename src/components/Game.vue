@@ -234,7 +234,6 @@ export default {
   watch: {},
   mounted() {
     this.theWord = [...this.list[Math.floor(Math.random()*list.length)].toUpperCase()];
-    this.theWord = [...'TESTE'];
     
     let stats = this.stats;
     stats.matches += 1;
