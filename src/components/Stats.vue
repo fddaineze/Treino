@@ -13,7 +13,7 @@
 
         <p>
           <span class="font-sm">Ganhas</span>
-          <strong>{{((100*stats.win)/(stats.win + stats.loss).toFixed(1))}}%</strong> 
+          <strong>{{((100*stats.win)/(stats.win + stats.loss)).toFixed(1)}}%</strong> 
         </p>
 
         <p>
