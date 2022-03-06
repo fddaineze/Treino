@@ -10,9 +10,12 @@
         <li><a @click="viewHelp = true">❔<span>Ajuda</span></a></li>
       </ul>
     </nav>
-    <game v-if="viewGame" v-on:reload="reloadGame()"></game>
-    <stats v-show="viewStats" v-on:closed="closeModal()"></stats>
-    <help v-show="viewHelp" v-on:closed="closeModal()"></help>
+    
+    <game v-if="viewGame" @reload="reloadGame()"></game>
+    <stats v-show="viewStats" @closed="closeModal()"></stats>
+    <help v-show="viewHelp" @closed="closeModal()"></help>
+
+    <p class="obs">Este jogo é um jogo de estudo baseado em term.ooo e wordle. Ele irá gerar uma nova palavra toda vez que atualizar a página. Aproveite! | por: F. Daineze</p>
   </div>
 </template>
 

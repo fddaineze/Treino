@@ -1,9 +1,12 @@
 @import "_themes/colors";
 @import "_themes/variables";
 
-//@import "layout/reset";
+//@import "layout";
 @import "layout/base";
 @import "layout/game";
 @import "layout/modal";
 @import "layout/help";
 @import "layout/stats";
+
+//@import "components";
+@import "components/keyboard";

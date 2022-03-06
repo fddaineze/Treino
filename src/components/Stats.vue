@@ -8,12 +8,12 @@
         </p>
         <p>
           <span class="font-sm">Concluídas</span>
-          <strong>{{((100*(stats.win + stats.loss))/stats.matches).toFixed(1)}}%</strong>
+          <strong>{{ (finishPercent() == 0) ? 0 : finishPercent() }}%</strong>
         </p>
 
         <p>
           <span class="font-sm">Ganhas</span>
-          <strong>{{((stats.win + stats.loss) != 0) ? ((100*stats.win)/(stats.win + stats.loss)).toFixed(1) : 0}}%</strong> 
+          <strong>{{ winPercent() }}%</strong> 
         </p>
 
         <p>
@@ -44,6 +44,16 @@ export default {
     return {};
   },
   methods: {
+    finishPercent() {
+      return (this.stats.matches != 0)
+        ? ((100 * (this.stats.win + this. stats.loss)) / this.stats.matches).toFixed(1)
+        : 0;
+    },
+    winPercent() {
+      return ((this.stats.win + this.stats.loss) != 0) 
+        ? ((100 * this.stats.win) / (this.stats.win + this.stats.loss)).toFixed(1)
+        : 0;
+    }
   },
   watch: {},
   mounted() {},

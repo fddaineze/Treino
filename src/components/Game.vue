@@ -24,30 +24,18 @@
       </div>
     </div>
 
-    <div :class="'keyboard' + ((complete) ? ' finished' : '')">
-      <div class="keyboard-row">
-        <div class="key" v-for="(key, i) in keylist.slice(0,10)" :key="i" @click="keyPressed({code: 'Key'+key,key: key})" :id="key">{{key}}</div>
-      </div>
-
-      <div class="keyboard-row">
-        <div class="key" v-for="(key, i) in keylist.slice(10,20)" :key="i" @click="keyPressed({code: 'Key'+key,key: key})" :id="key">{{key}}</div>
-      </div>
-
-      <div class="keyboard-row">
-        <div class="key" v-for="(key, i) in keylist.slice(20,28)" :key="i" @click="keyPressed({code: 'Key'+key,key: key})" :id="key">{{key}}</div>
-      </div>
-    </div>
-
-    <p class="obs">Este jogo é um jogo de estudo baseado em term.ooo e wordle. Ele irá gerar uma nova palavra toda vez que atualizar a página. Aproveite!</p>
+    <keyboard @key="keyPressed($event)" :complete="complete"></keyboard>
   </main>
 </template>
 
 <script>
 import { lowlist, autocomplete, list, keylist } from "@/js/db.js";
+import Keyboard from "@/components/game/Keyboard.vue";
 import store from '@/store'
 
 export default {
   name: 'Game',
+  components: {Keyboard},
   computed: {
     stats() { 
       return this.$store.state.stats 
@@ -125,51 +113,23 @@ export default {
     setLetter(line, letter) {
       if(line == this.line) this.letter = letter;
     },
-    confirmWord() {
-      let myWord = this.wordLines[this.line].join("").toLowerCase();
-
-      // Check Word
+    setKeyColor(key, color) {
+      document.getElementById(key).classList.add(color);
+    },
+    isWord(myWord) {
       if(!this.list.includes(myWord)) {
         if(!this.lowlist.has(myWord)) {
           if(this.autocomplete[myWord]) {
-            myWord = this.autocomplete[myWord];
+            return this.autocomplete[myWord];
           } else {
             this.incorrect = true;
-            return;
+            return null;
           }
         }
       }
-
-      // Normalize
-      let clear = this.theWord.join("").normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-      clear = [...clear.toUpperCase()];
-
-      // Set Tips
-      this.wordLines[this.line].forEach((e, i) => {
-
-        if(e == clear[i]) {
-          this.wordTips[this.line][i] = 'correct';
-          this.setKeyColor(e, 'correct-key');
-          return;
-        }
-
-        if(clear.includes(e)) {
-          this.wordTips[this.line][i] = 'hot';
-          this.setKeyColor(e, 'hot-key');
-          return;
-        }
-        
-        this.wordTips[this.line][i] = 'not';
-        this.setKeyColor(e, 'not-key');
-        return;
-
-      });
-
-      this.wordLines[this.line] = [...myWord.toUpperCase()];
-
-      this.letter = 0;
-      this.line += 1;
-
+      return myWord;
+    },
+    isComplete() {
       if(this.line > 5 ) this.complete = true;
       if(this.wordTips[this.line-1].every( e => e=='correct')) {
         this.vitory = true;
@@ -189,22 +149,96 @@ export default {
         }
       }
     },
+    getIndexes(arr, val) {
+        let indexes = [], i= -1;
+        while ((i = arr.indexOf(val, i+1)) != -1) {
+          indexes.push(i);
+        }
+        return indexes;
+    },
+    confirmWord() {
+      let myWord = this.wordLines[this.line].join("").toLowerCase();
+      myWord = this.isWord(myWord);
+      if (!myWord) return;
 
-    setKeyColor(key, color) {
-      document.getElementById(key).classList.add(color);
-    }
+      // Normalize
+      let clear = this.theWord.join("").normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+      clear = [...clear.toUpperCase()];
+
+      // Set Tips
+      this.wordLines[this.line].forEach((e, i) => {
+        if(e == clear[i]) {
+          this.wordTips[this.line][i] = 'correct';
+          this.setKeyColor(e, 'correct-key');
+          return;
+        }
+        if(clear.includes(e)) {
+          this.wordTips[this.line][i] = 'hot';
+          this.setKeyColor(e, 'hot-key');
+          return;
+        }
+        this.wordTips[this.line][i] = 'not';
+        this.setKeyColor(e, 'not-key');
+        return;
+      });
+
+      // Colors
+      let line = this.wordLines[this.line];
+      let tips = this.wordTips[this.line];
+      if (tips.includes('hot')) {
+        let hotList = this.getIndexes(tips, 'hot');
+
+        hotList.forEach(i => {
+
+          let warning = false;
+          let letter = line[i];
+          let letterList = this.getIndexes(line, letter);
+
+          if (letterList.length > 1) {
+            warning = false;
+
+            for (const [i, v] of clear.entries()) {
+              if(v == letter) {
+                if(tips[i] == 'not') {
+                  warning = false;
+                  break;
+                } else {
+                  warning = true;
+                }
+              }
+            };
+
+            if(warning) for (const [i, v] of line.entries()) {
+              if (v == letter && tips[i] == 'hot') {
+                this.wordTips[this.line][i] = 'not';
+                tips = this.wordTips[this.line];
+                warning = false;
+                break;
+              }
+            };
+          }
+        });
+
+        // clear : palavra atual
+        // line : palavra tentada
+        // tips : lista de dicas
+      }
+
+      this.wordLines[this.line] = [...myWord.toUpperCase()];
+
+      this.letter = 0;
+      this.line += 1;
+      this.isComplete();
+    },
   },
   watch: {},
   mounted() {
     this.theWord = [...this.list[Math.floor(Math.random()*list.length)].toUpperCase()];
+    this.theWord = [...'TESTE'];
     
     let stats = this.stats;
     stats.matches += 1;
     store.commit("setStats", stats);
-    
-    window.addEventListener("keydown", e => {
-      this.keyPressed(e);
-    });
   },
   created() {}
 }
