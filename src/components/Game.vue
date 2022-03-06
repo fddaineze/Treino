@@ -1,6 +1,6 @@
 <template>
   <main id="game">
-    <p class="alert" v-if="!complete && !incorrect">TREINO</p>
+    <p class="alert" v-if="!complete && !incorrect">Descubra a Palavra!</p>
 
     <p class="alert sucesso" v-if="complete && vitory">A resposta era {{theWord.join("")}}!</p>
     <p class="alert derrota" v-if="complete && !vitory">A resposta era {{theWord.join("")}}!</p>
