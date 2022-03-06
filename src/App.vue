@@ -7,11 +7,12 @@
         <li><a @click="setTheme(2)">📔<span>Tema Sépia</span></a></li>
         <li><a @click="setTheme(3)">👓<span>Alto Contraste</span></a></li>
         <li><a @click="viewStats = true">💹<span>Estatísticas</span></a></li>
+        <li><a @click="viewHelp = true">❔<span>Ajuda</span></a></li>
       </ul>
     </nav>
-    <game></game>
-    <stats v-show="viewStats"></stats>
-    <span v-show="viewStats" class="close-stats" @click="viewStats = false">X</span>
+    <game v-show="viewGame" v-on:reload="reloadGame()"></game>
+    <stats v-show="viewStats" v-on:closed="closeModal()"></stats>
+    <help v-show="viewHelp" v-on:closed="closeModal()"></help>
   </div>
 </template>
 
@@ -19,10 +20,11 @@
 import { setTheme, setFontSize, loadStats } from "@/js/base.js";
 import Game from "@/components/Game.vue";
 import Stats from "@/components/Stats.vue";
+import Help from "@/components/Help.vue";
 
 export default {
   name: 'App',
-  components: {Game, Stats},
+  components: {Game, Stats, Help},
   computed: {
     theme() { 
       return this.$store.state.theme 
@@ -30,13 +32,22 @@ export default {
   },
   data() {
     return {
-      viewStats: false
+      viewStats: false,
+      viewHelp: true,
+      viewGame: true
     };
   },
   methods: {
     setTheme,
     setFontSize,
-    loadStats
+    loadStats,
+    reloadGame() {
+      console.log('reload');
+    },
+    closeModal() {
+      this.viewStats = false;
+      this.viewHelp = false;
+    }
   },
   watch: {
     theme: function () {

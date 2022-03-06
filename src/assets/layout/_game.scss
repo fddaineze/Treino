@@ -7,29 +7,29 @@
                 cursor: pointer;
             }
         }
+    }
+}
 
-        .word-letter {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--gray-500);
-            border-radius: 5px;
-            width: 1.5em;
-            height: 1.5em;
-            margin: 2px;
-            font-size: 1.7em;
-            line-height: 0;
-            
-            &.selected {
-                background-color: var(--gray-300);
-            }
-            &.hot {
-                background-color: $warning;
-            }
-            &.correct {
-                background-color: $success;
-            }
-        }
+.word-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gray-500);
+    border-radius: 5px;
+    width: 1.5em;
+    height: 1.5em;
+    margin: 2px;
+    font-size: 1.7em;
+    line-height: 0;
+    
+    &.selected {
+        background-color: var(--gray-300);
+    }
+    &.hot {
+        background-color: $warning;
+    }
+    &.correct {
+        background-color: $success;
     }
 }
 

@@ -16,12 +16,10 @@ const setFontSize = (payload) => {
 }
 
 const loadStats = () => {
-    console.log('load stats');
     if (localStorage.treinoStats) {
         let sg = JSON.parse(localStorage.treinoStats);
         store.commit("setStats",sg);
         store.commit("setTheme",sg.theme);
-        console.log(sg);
     }
 }
 

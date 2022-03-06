@@ -1,12 +1,35 @@
 <template>
-  <main id="stats">
-    <p class="font-lg">Partidas Iniciadas: <strong>{{stats.matches}}</strong></p>
-    <p class="font-lg">Partidas Concluídas: <strong>{{stats.win + stats.loss}}</strong></p>
-    <p class="font-lg">Palavras Descobertas: <strong>{{stats.win}}</strong></p>
-    <p class="font-lg">Palavras Perdidas: <strong>{{stats.loss}}</strong></p>
-    <p class="font-lg">Melhor Seq. de Acertos: <strong>{{stats.bestWinSeq}}</strong></p>
-    <p class="font-lg">Sequência Atual: <strong>{{stats.atualWinSeq}}</strong></p>
-  </main>
+  <div class="modal-backdrop">
+    <aside class="modal" id="stats">
+      <div class="content">
+        <p>
+          <span class="font-sm">Partidas<br>Iniciadas</span>
+          <strong>{{stats.matches}}</strong>
+        </p>
+        <p>
+          <span class="font-sm">Concluídas</span>
+          <strong>{{((100*(stats.win + stats.loss))/stats.matches).toFixed(1)}}%</strong>
+        </p>
+
+        <p>
+          <span class="font-sm">Ganhas</span>
+          <strong>{{((100*stats.win)/(stats.win + stats.loss).toFixed(1))}}%</strong> 
+        </p>
+
+        <p>
+          <span class="font-sm">Sequência<br>de Vitórias</span>
+          <strong>{{stats.atualWinSeq}}</strong>
+        </p>
+        <p>
+          <span class="font-sm">Melhor<br>Sequência</span>
+          <strong>{{stats.bestWinSeq}}</strong>
+          
+        </p>
+      </div>
+
+      <span class="close-stats" @click="$emit('closed');">X</span>
+    </aside>
+  </div>
 </template>
 
 <script>

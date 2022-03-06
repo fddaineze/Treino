@@ -96,7 +96,7 @@ export default {
     keyPressed(key) {
       if(this.complete) {
         if(key.code == 'Enter' || key.code == 'NumpadEnter' || key.code == 'KeyENTER') {
-          window.location.reload();
+          this.$emit('reload');
           return;
         }
         return;
